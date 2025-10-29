@@ -1,0 +1,79 @@
+# Customer Purchase Prediction ML Pipeline Configuration
+
+# Global settings
+random_seed: 42
+verbose: true
+n_jobs: -1
+
+# Data processing configuration
+data:
+  dataset_path: "online_shoppers_intention.csv"
+  test_size: 0.2
+  random_state: 42
+  validation_split: 0.2
+  missing_value_strategy: "median"  # median, mean, mode, drop
+  categorical_encoding: "label"     # label, onehot
+  numeric_scaling: "standard"       # standard, minmax, robust
+  feature_selection: false
+  max_features: null
+
+# Model training configuration
+models:
+  cv_folds: 5
+  cv_scoring: "roc_auc"
+  hyperparameter_tuning: true
+  tuning_method: "grid_search"  # grid_search, random_search
+  n_iter_random: 100
+  
+  # Logistic Regression hyperparameters
+  logistic_regression:
+    C: [0.1, 1.0, 10.0]
+    penalty: ["l1", "l2"]
+    solver: ["liblinear", "saga"]
+    max_iter: [1000]
+  
+  # Random Forest hyperparameters
+  random_forest:
+    n_estimators: [100, 200, 300]
+    max_depth: [10, 20, null]
+    min_samples_split: [2, 5, 10]
+    min_samples_leaf: [1, 2, 4]
+  
+  # Gradient Boosting hyperparameters
+  gradient_boosting:
+    n_estimators: [100, 200, 300]
+    learning_rate: [0.01, 0.1, 0.2]
+    max_depth: [3, 6, 9]
+    subsample: [0.8, 0.9, 1.0]
+
+# Evaluation configuration
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1", "roc_auc"]
+  plot_roc_curves: true
+  plot_confusion_matrices: true
+  plot_feature_importance: true
+  save_predictions: true
+
+# Visualization configuration
+visualization:
+  figure_size: [10, 6]
+  dpi: 300
+  style: "seaborn-v0_8"
+  color_palette: "viridis"
+  save_format: "png"
+  plot_distributions: true
+  plot_correlations: true
+  plot_feature_relationships: true
+  plot_model_comparison: true
+  top_features_to_plot: 10
+
+# Output configuration
+output:
+  base_output_dir: "outputs"
+  models_dir: "models"
+  plots_dir: "plots"
+  reports_dir: "reports"
+  logs_dir: "logs"
+  save_models: true
+  save_plots: true
+  save_reports: true
